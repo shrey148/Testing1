@@ -14,3 +14,15 @@ This repository contains a sample Chrome extension that displays live cricket sc
 6. Click the extension icon to view live scores and video highlights.
 
 The code is provided under the MIT License located in `LICENSE`.
+
+## NBA Playoff Tracker Extension
+
+This repository also includes a Chrome extension that shows the latest NBA playoff game information. The extension fetches the most recent postseason matchup, displays a short summary, top YouTube highlights and leading scorers.
+
+### Setup
+1. Obtain a YouTube Data API v3 key.
+2. Replace `YOUR_YOUTUBE_API_KEY` in `nba-extension/popup.js` with your key.
+3. Open Chrome and navigate to `chrome://extensions`.
+4. Enable **Developer mode** and select **Load unpacked**.
+5. Choose the `nba-extension` folder.
+6. Click the extension icon to view game details.
