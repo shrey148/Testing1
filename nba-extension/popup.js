@@ -16,8 +16,16 @@ async function safeJsonFetch(url) {
 }
 
 async function fetchLatestGame() {
-  const data = await safeJsonFetch('https://www.balldontlie.io/api/v1/games?postseason=true&per_page=1');
-  return data && data.data && data.data.length ? data.data[0] : null;
+  const currentYear = new Date().getFullYear();
+  for (let offset = 0; offset < 3; offset++) {
+    const season = currentYear - offset;
+    const url = `https://www.balldontlie.io/api/v1/games?postseason=true&per_page=1&seasons[]=${season}`;
+    const data = await safeJsonFetch(url);
+    if (data && data.data && data.data.length) {
+      return data.data[0];
+    }
+  }
+  return null;
 }
 
 async function fetchGameStats(gameId) {
