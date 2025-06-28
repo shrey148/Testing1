@@ -3,7 +3,7 @@
   "version": "1.0",
   "manifest_version": 3,
   "description": "Show latest NBA playoff game details, top plays, highlights and team stats.",
-  "permissions": ["storage"],
+  "permissions": ["storage", "alarms"],
   "host_permissions": [
     "https://www.balldontlie.io/*",
     "https://www.googleapis.com/*"

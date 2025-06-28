@@ -24,5 +24,5 @@ This repository also includes a Chrome extension that shows the latest NBA playo
 2. Replace `YOUR_YOUTUBE_API_KEY` in `nba-extension/popup.js` with your key.
 3. Open Chrome and navigate to `chrome://extensions`.
 4. Enable **Developer mode** and select **Load unpacked**.
-5. Choose the `nba-extension` folder.
+5. Choose the `nba-extension` folder. The extension requires the `alarms` permission for periodic updates.
 6. Click the extension icon to view game details.
