@@ -1,20 +1,34 @@
+async function safeJsonFetch(url) {
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) {
+      throw new Error(`HTTP ${resp.status}`);
+    }
+    const type = resp.headers.get('content-type') || '';
+    if (!type.includes('application/json')) {
+      throw new Error('Invalid content type');
+    }
+    return await resp.json();
+  } catch (e) {
+    console.error('Fetch failed for', url, e);
+    return null;
+  }
+}
+
 async function fetchLatestGame() {
-  const resp = await fetch('https://www.balldontlie.io/api/v1/games?postseason=true&per_page=1');
-  const data = await resp.json();
-  return data.data && data.data.length ? data.data[0] : null;
+  const data = await safeJsonFetch('https://www.balldontlie.io/api/v1/games?postseason=true&per_page=1');
+  return data && data.data && data.data.length ? data.data[0] : null;
 }
 
 async function fetchGameStats(gameId) {
-  const resp = await fetch(`https://www.balldontlie.io/api/v1/stats?game_ids[]=${gameId}&per_page=100`);
-  const data = await resp.json();
-  return data.data || [];
+  const data = await safeJsonFetch(`https://www.balldontlie.io/api/v1/stats?game_ids[]=${gameId}&per_page=100`);
+  return data && data.data ? data.data : [];
 }
 
 async function fetchHighlights(query) {
   const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=5&key=YOUR_YOUTUBE_API_KEY`;
-  const resp = await fetch(url);
-  const data = await resp.json();
-  return data.items || [];
+  const data = await safeJsonFetch(url);
+  return data && data.items ? data.items : [];
 }
 
 function summarizePlays(game, stats) {
@@ -31,7 +45,7 @@ function displayGame(game) {
     gameEl.textContent = 'No recent playoff games found.';
     return;
   }
-  gameEl.textContent = `${game.home_team.full_name} vs ${game.visitor_team.full_name} on ${game.date.slice(0,10)}`;
+  gameEl.textContent = `${game.home_team.full_name} vs ${game.visitor_team.full_name} on ${game.date.slice(0, 10)}`;
 }
 
 function displaySummary(summary) {

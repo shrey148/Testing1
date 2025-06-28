@@ -7,14 +7,23 @@ chrome.runtime.onInstalled.addListener(() => {
 if (chrome.alarms && chrome.alarms.onAlarm) {
   chrome.alarms.onAlarm.addListener((alarm) => {
     if (alarm.name === 'updateNBA') {
-      chrome.action.setBadgeText({ text: '...' });
+      chrome.action && chrome.action.setBadgeText({ text: '...' });
       fetch('https://www.balldontlie.io/api/v1/games?per_page=1')
-        .then(resp => resp.json())
+        .then(resp => {
+          if (!resp.ok) {
+            throw new Error('status ' + resp.status);
+          }
+          const type = resp.headers.get('content-type') || '';
+          if (!type.includes('application/json')) {
+            throw new Error('invalid type');
+          }
+          return resp.json();
+        })
         .then(() => {
-          chrome.action.setBadgeText({ text: '' });
+          chrome.action && chrome.action.setBadgeText({ text: '' });
         })
         .catch(() => {
-          chrome.action.setBadgeText({ text: '!' });
+          chrome.action && chrome.action.setBadgeText({ text: '!' });
         });
     }
   });
