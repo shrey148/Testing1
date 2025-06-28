@@ -1,20 +1,47 @@
 async function fetchLatestGame() {
-  const resp = await fetch('https://www.balldontlie.io/api/v1/games?postseason=true&per_page=1');
-  const data = await resp.json();
-  return data.data && data.data.length ? data.data[0] : null;
+  try {
+    const resp = await fetch('https://www.balldontlie.io/api/v1/games?postseason=true&per_page=1');
+    if (!resp.ok) {
+      console.error('Failed to fetch latest game', resp.status);
+      return null;
+    }
+    const data = await resp.json();
+    return data.data && data.data.length ? data.data[0] : null;
+  } catch (e) {
+    console.error('Error fetching latest game', e);
+    return null;
+  }
 }
 
 async function fetchGameStats(gameId) {
-  const resp = await fetch(`https://www.balldontlie.io/api/v1/stats?game_ids[]=${gameId}&per_page=100`);
-  const data = await resp.json();
-  return data.data || [];
+  try {
+    const resp = await fetch(`https://www.balldontlie.io/api/v1/stats?game_ids[]=${gameId}&per_page=100`);
+    if (!resp.ok) {
+      console.error('Failed to fetch game stats', resp.status);
+      return [];
+    }
+    const data = await resp.json();
+    return data.data || [];
+  } catch (e) {
+    console.error('Error fetching game stats', e);
+    return [];
+  }
 }
 
 async function fetchHighlights(query) {
   const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=5&key=YOUR_YOUTUBE_API_KEY`;
-  const resp = await fetch(url);
-  const data = await resp.json();
-  return data.items || [];
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) {
+      console.error('Failed to fetch highlights', resp.status);
+      return [];
+    }
+    const data = await resp.json();
+    return data.items || [];
+  } catch (e) {
+    console.error('Error fetching highlights', e);
+    return [];
+  }
 }
 
 function summarizePlays(game, stats) {
