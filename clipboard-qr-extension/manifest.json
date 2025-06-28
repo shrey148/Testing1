@@ -1,0 +1,11 @@
+{
+  "name": "Clipboard QR Saver",
+  "version": "1.0",
+  "manifest_version": 3,
+  "description": "Save clipboard text and generate a QR code for quick sharing.",
+  "permissions": ["storage", "clipboardRead", "clipboardWrite"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Clipboard QR"
+  }
+}
