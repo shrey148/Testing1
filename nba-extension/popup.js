@@ -45,7 +45,7 @@ function displayGame(game) {
     gameEl.textContent = 'No recent playoff games found.';
     return;
   }
-  gameEl.textContent = `${game.home_team.full_name} vs ${game.visitor_team.full_name} on ${game.date.slice(0,10)}`;
+  gameEl.textContent = `${game.home_team.full_name} vs ${game.visitor_team.full_name} on ${game.date.slice(0, 10)}`;
 }
 
 function displaySummary(summary) {
