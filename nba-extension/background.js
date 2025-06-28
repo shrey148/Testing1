@@ -29,17 +29,19 @@ async function fetchLatestGame() {
 }
 
 chrome.runtime.onInstalled.addListener(() => {
-  if (chrome.alarms?.create) {
+  if (chrome.alarms && chrome.alarms.create) {
     chrome.alarms.create('updateNBA', { periodInMinutes: 10 });
   }
 });
 
-if (chrome.alarms?.onAlarm) {
+if (chrome.alarms && chrome.alarms.onAlarm) {
   chrome.alarms.onAlarm.addListener(async (alarm) => {
     if (alarm.name === 'updateNBA') {
-      chrome.action?.setBadgeText({ text: '...' });
-      const game = await fetchLatestGame();
-      chrome.action?.setBadgeText({ text: game ? '' : '!' });
+      if (chrome.action && chrome.action.setBadgeText) {
+        chrome.action.setBadgeText({ text: '...' });
+        const game = await fetchLatestGame();
+        chrome.action.setBadgeText({ text: game ? '' : '!' });
+      }
     }
   });
 }
