@@ -1,7 +1,7 @@
 // Automatically save clipboard text on copy
 // Listens for copy events and stores clipboard history
 
-document.addEventListener('copy', () => {
+document.addEventListener('copy', async () => {
   chrome.storage.local.get({ autoSave: true, history: [] }, async data => {
     if (!data.autoSave) return;
     try {
