@@ -38,6 +38,7 @@ async function saveClipboard() {
 
 document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.getElementById('autoSaveToggle');
+  const status = document.getElementById('status');
   document.getElementById('saveBtn').addEventListener('click', saveClipboard);
   chrome.storage.local.get({ history: [], autoSave: true }, data => {
     updateHistory(data.history);
@@ -48,6 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   toggle.addEventListener('change', () => {
-    chrome.storage.local.set({ autoSave: toggle.checked });
+    chrome.storage.local.set({ autoSave: toggle.checked }, () => {
+      status.textContent = toggle.checked ? 'Auto save enabled' : 'Auto save disabled';
+    });
   });
 });
