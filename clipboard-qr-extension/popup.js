@@ -37,11 +37,18 @@ async function saveClipboard() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('autoSaveToggle');
   document.getElementById('saveBtn').addEventListener('click', saveClipboard);
-  chrome.storage.local.get({ history: [] }, data => {
+
+  chrome.storage.local.get({ history: [], autoSave: true }, data => {
     updateHistory(data.history);
     if (data.history.length) {
       showQR(data.history[0]);
     }
+    toggle.checked = data.autoSave;
+  });
+
+  toggle.addEventListener('change', () => {
+    chrome.storage.local.set({ autoSave: toggle.checked });
   });
 });
